@@ -37,30 +37,43 @@
         <tr>
             <td>
                 <header class="menu">
-                    <table>
+                    <table align="center" border="1">
                         <tr>
                             <td>
-                                <a href="<c:url value="/home.jsp"/>">Home</a>
+                                <a href="<c:url value="/home.jsp"/>">Home</a></td>
+                            <td>
+                                <form method="post" action="view_doctors">
+                                    <input type="hidden" name="action" value="view_doctors">
+                                    <input type="submit" value="Doctors"/>
+                                </form>
                             </td>
-                            <td><form method="post" action="view_doctors">
-                                <input type="hidden" name="action" value="view_doctors">
-                                <input type="submit" value="Doctors"/>
-                            </form>
+                            <td>
+                                <form method="post" action="view_diseases">
+                                    <input type="hidden" name="action" value="view_main_doctor">
+                                    <input type="submit" value="Contacts"/>
+                                </form>
                             </td>
-                            <td></td>
-                            <td></td>
+                            <td>
+                                <form method="post" action="view_main_doctor">
+                                    <input type="hidden" name="action" value="view_main_doctor">
+                                    <input type="submit" value="Contacts"/>
+                                </form>
+                            </td>
                         </tr>
+                        <hr/>
                     </table>
-
-
-
-                    <form method="post" action="view_main_doctor">
-                        <input type="hidden" name="action" value="view_main_doctor">
-                        <input type="submit" value="Contacts"/>
-                    </form>
-                </header><hr/><br>
+                </header><br>
             </td>
-        </tr><br>
+        </tr>
+        <br>
+        <hr>
+        <tr>
+            <td>
+                <footer align="center">
+                    @CopyRight
+                </footer>
+            </td>
+        </tr>
     </table>
 </body>
 </html>
