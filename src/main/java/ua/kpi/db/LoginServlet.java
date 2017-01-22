@@ -38,11 +38,11 @@ public class LoginServlet extends HttpServlet {
                         statement.executeQuery();
 
                         String authorizationStatus = (String) statement.getObject(5);
-                        int isMainDoctor = (int) statement.getObject(3);
-                        int isDoctor = (int) statement.getObject(4);
+
 
                         if ("Successful authorisation".equals(authorizationStatus)) {
-
+                            int isMainDoctor = (int) statement.getObject(3);
+                            int isDoctor = (int) statement.getObject(4);
 
                             HttpSession session = req.getSession();
                             if (isDoctor > 0) {

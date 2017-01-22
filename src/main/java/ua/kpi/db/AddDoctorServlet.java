@@ -21,12 +21,13 @@ public class AddDoctorServlet extends HttpServlet {
             try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
                  CallableStatement statement = connection.prepareCall("{call add_new_doctor(?, ?, ?, ?, ?, ?, ?, ?)}")) {
 
-                String mainDoctorLogin = req.getParameter("login");
+                String mainDoctorLogin = (String) req.getSession().getAttribute("login");
+
                 String doctorLogin = req.getParameter("dLogin");
                 String doctorPassword = req.getParameter("dPassword");
                 String doctorName = req.getParameter("dName");
                 String doctorSurname = req.getParameter("dSurname");
-                String doctorEmail = req.getParameter("dEmail");
+                String doctorEmail = req.getParameter("doctorEmail");
                 String doctorSpeciality = req.getParameter("dSpeciality");
 
                 statement.setString(1, mainDoctorLogin);
@@ -48,7 +49,7 @@ public class AddDoctorServlet extends HttpServlet {
 
                     HttpSession session = req.getSession();
                     session.setAttribute("login", mainDoctorLogin);
-                    getServletContext().getRequestDispatcher("/doctors.jsp").forward(req, resp);
+                    getServletContext().getRequestDispatcher("/view_doctors").forward(req, resp);
                 } else {
                     req.setAttribute("error_msg", addingStatus);
                     getServletContext().getRequestDispatcher("/error.jsp").forward(req, resp);

@@ -34,9 +34,53 @@
         </td>
     </tr>
 </table>
-    <c:forEach items="${requestScope.diseaseList}" var="item">
-        name: ${item[0]} surname: ${item[1]} spec: ${item[2]}
-    </c:forEach>
+<table align="center" width="80%" border="0">
+    <tr>
+        <td>
+            <header class="menu">
+                <table align="center" border="1">
+                    <tr>
+                        <td>
+                            <a href="<c:url value="/home.jsp"/>">Home</a></td>
+                        <td>
+                            <form method="post" action="view_doctors">
+                                <input type="hidden" name="action" value="view_doctors">
+                                <input type="submit" value="Doctors"/>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="post" action="view_diseases">
+                                <input type="hidden" name="action" value="view_main_doctor">
+                                <input type="submit" value="Contacts"/>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="post" action="view_main_doctor">
+                                <input type="hidden" name="action" value="view_main_doctor">
+                                <input type="submit" value="Contacts"/>
+                            </form>
+                        </td>
+                    </tr>
 
+                </table>
+            </header><br>
+            <hr/>
+        </td>
+    </tr>
+    <br>
+    <hr>
+    <tr>
+        <c:forEach items="${requestScope.diseaseList}" var="item">
+            name: ${item[0]} surname: ${item[1]} spec: ${item[2]}
+        </c:forEach>
+    </tr>
+    <tr>
+        <td>
+            <footer align="center">
+                @CopyRight
+            </footer>
+        </td>
+    </tr>
+</table>
 </body>
 </html>
