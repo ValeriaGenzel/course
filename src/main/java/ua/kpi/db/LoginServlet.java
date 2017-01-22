@@ -38,20 +38,21 @@ public class LoginServlet extends HttpServlet {
                         statement.executeQuery();
 
                         String authorizationStatus = (String) statement.getObject(5);
+                        int isMainDoctor = (int) statement.getObject(3);
+                        int isDoctor = (int) statement.getObject(4);
 
                         if ("Successful authorisation".equals(authorizationStatus)) {
-                            int isMainDoctor = (int) statement.getObject(3);
-                            int isDoctor = (int) statement.getObject(4);
+
 
                             HttpSession session = req.getSession();
                             if (isDoctor > 0) {
-                                session.setAttribute("user_role", "doctor");
+                                session.setAttribute("user_role", "d");
                             } else if (isMainDoctor > 0) {
-                                session.setAttribute("user_role", "main_doctor");
+                                session.setAttribute("user_role", "m");
                             } else {
-                                session.setAttribute("user_role", "user");
+                                session.setAttribute("user_role", "u");
                             }
-                            session.setAttribute("user_login", userLogin);
+                            session.setAttribute("login", userLogin);
                             getServletContext().getRequestDispatcher("/home.jsp").forward(req, resp);
                         } else {
                             req.setAttribute("error_msg", authorizationStatus);

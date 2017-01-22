@@ -8,9 +8,9 @@
 </head>
 <body>
 
-    <c:if test="${!empty sessionScope.user_login}">
+    <c:if test="${!empty sessionScope.login}">
         <form method="post" action="login_s">
-            Hello, ${sessionScope.user_login}!
+            Hello, ${sessionScope.login}!
             <input type="hidden" name="action" value="out">
             <input type="submit" value="Logout"/>
             <a href="<c:url value="/editProfile.jsp"/>">Personal page</a>
@@ -39,9 +39,9 @@
         </table>
 
     </c:forEach>
-        <c:if test="${!empty sessionScope.user_login}">
+        <c:if test="${!empty sessionScope.login}">
             <c:choose>
-                <c:when test="${sessionScope.main_doctor}">
+                <c:when test="${sessionScope.user_role}">
 
                     <form method="post" action="add_doctor_s">
                         <input type = "text" value ="${sessionScope.dLogin}">

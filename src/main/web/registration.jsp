@@ -32,7 +32,7 @@
             confirm password
             <input type="password" name="passwordConfirm" required pattern="[a-zA-Z0-9]{6,20}"> <br>
         </label>
-        <input type="submit">
+        <input type="submit" valur = "Register">
     </form>
 </body>
 </html>

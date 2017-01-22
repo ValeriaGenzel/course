@@ -28,7 +28,7 @@ public class UnbanUserServlet extends HttpServlet {
 
                         String mainDoctorLogin = req.getParameter("MDlogin");
                         String mainDoctorPassword = req.getParameter("MDpassword");
-                        String userLogin = req.getParameter("ogin");
+                        String userLogin = req.getParameter("login");
 
                         statement.setString(1, mainDoctorLogin);
                         statement.setString(2, mainDoctorPassword);

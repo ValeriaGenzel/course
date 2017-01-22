@@ -28,7 +28,7 @@
         <input type="submit" value="Diseases"/>
     </form>
 
-    <a href="<c:url value="/registration.jsp"/>">Registration</a>
+    <a href="<c:url value="/Add.jsp"/>">add</a>
 
     <%--<c: if test="${!sessionScope.user_login}">--%>
         <%--<form method="post" action="login_s">--%>

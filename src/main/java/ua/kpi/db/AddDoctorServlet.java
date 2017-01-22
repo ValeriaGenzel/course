@@ -11,9 +11,6 @@ import java.sql.*;
 
 import static ua.kpi.db.ConnectionParams.*;
 
-/**
- * Created by Valeria on 14.01.2017.
- */
 @WebServlet(name = "AddDoctorServlet", urlPatterns = {"/add_doctor_s"})
 public class AddDoctorServlet extends HttpServlet {
 
@@ -22,10 +19,9 @@ public class AddDoctorServlet extends HttpServlet {
         try {
             Class.forName(DRIVER);
             try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                 CallableStatement statement = connection.prepareCall("{call add_new_doctor(?, ?, ?, ?, ?, ?, ?, ?,?)}")) {
+                 CallableStatement statement = connection.prepareCall("{call add_new_doctor(?, ?, ?, ?, ?, ?, ?, ?)}")) {
 
-                String mainDoctorLogin = req.getParameter("MDLogin");
-                String mainDoctorPassword = req.getParameter("MDPassword");
+                String mainDoctorLogin = req.getParameter("login");
                 String doctorLogin = req.getParameter("dLogin");
                 String doctorPassword = req.getParameter("dPassword");
                 String doctorName = req.getParameter("dName");
@@ -34,23 +30,24 @@ public class AddDoctorServlet extends HttpServlet {
                 String doctorSpeciality = req.getParameter("dSpeciality");
 
                 statement.setString(1, mainDoctorLogin);
-                statement.setString(2, mainDoctorPassword);
-                statement.setString(3, doctorLogin);
-                statement.setString(4, doctorPassword);
-                statement.setString(5, doctorName);
-                statement.setString(6, doctorSurname);
-                statement.setString(7, doctorEmail);
-                statement.setString(8, doctorSpeciality);
 
-                statement.registerOutParameter(9, Types.VARCHAR);
+                statement.setString(2, doctorLogin);
+                statement.setString(3, doctorPassword);
+                statement.setString(4, doctorName);
+                statement.setString(5, doctorSurname);
+                statement.setString(6, doctorEmail);
+                statement.setString(7, doctorSpeciality);
+
+                statement.registerOutParameter(8, Types.VARCHAR);
 
                 statement.executeQuery();
 
-                String addingStatus = (String) statement.getObject(9);
+                String addingStatus = (String) statement.getObject(8);
 
-                if ("Succsseful adding".equals(addingStatus)) {
+                if ("Successful adding".equals(addingStatus)) {
 
                     HttpSession session = req.getSession();
+                    session.setAttribute("login", mainDoctorLogin);
                     getServletContext().getRequestDispatcher("/doctors.jsp").forward(req, resp);
                 } else {
                     req.setAttribute("error_msg", addingStatus);
