@@ -71,8 +71,43 @@
     <hr>
     <tr>
         <c:forEach items="${requestScope.diseaseList}" var="item">
-            name: ${item[0]} surname: ${item[1]} spec: ${item[2]}
+            <table align="centre">
+                <tr>
+                    <input type = "text" value="${item[0]}" align="centre" readonly>
+                </tr>
+                <tr>
+                    <input type = "text" value="${item[1]}" align="centre" readonly>
+                </tr>
+                <tr>
+                    <input type = "text" value="${item[2]}" align="centre" readonly>
+                </tr>
+
+            </table>
         </c:forEach>
+    </tr>
+    <tr>
+        <c:if test="${!empty sessionScope.login}">
+            <c:choose>
+                <c:when test="${sessionScope.user_role == 'd'}">
+
+                    <form method="post" action="add_disease_s">
+                        <input type = "text" name="dLogin">
+                        <input type = "text" name="dPassword">
+                        <input type = "text" name="dName">
+                        <input type = "text" name="dSurname">
+                        <input type = "text" name="doctorEmail">
+                        <input type = "text" name="dSpeciality">
+                        <input type = "text" name="password">
+                        <input type="submit" name="add doctor"/>
+                    </form>
+                    <form method="post" action="delete_doctor_s">
+                        <input type = "text" name="dLogin">
+                        <input type = "text" name="password">
+                        <input type="submit" name="add doctor"/>
+                    </form>
+                </c:when>
+            </c:choose>
+        </c:if>
     </tr>
     <tr>
         <td>

@@ -97,15 +97,11 @@
                             <input type = "text" name="password">
                             <input type="submit" name="add doctor"/>
                         </form>
-                        <%--<form method="post" action="add_doctor_s">--%>
-                            <%--<input type = "text" name="dLogin">--%>
-                            <%--<input type = "text" name="dPassword">--%>
-                            <%--<input type = "text" name="dName">--%>
-                            <%--<input type = "text" name="dSurname">--%>
-                            <%--<input type = "text" name="doctorEmail">--%>
-                            <%--<input type = "text" name="dSpeciality">--%>
-                            <%--<input type="submit" name="add doctor"/>--%>
-                        <%--</form>--%>
+                        <form method="post" action="delete_doctor_s">
+                            <input type = "text" name="dLogin">
+                            <input type = "text" name="password">
+                            <input type="submit" name="add doctor"/>
+                        </form>
                     </c:when>
                 </c:choose>
             </c:if>
