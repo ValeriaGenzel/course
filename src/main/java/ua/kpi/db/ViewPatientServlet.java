@@ -12,30 +12,30 @@ import java.util.List;
 
 import static ua.kpi.db.ConnectionParams.*;
 
-@WebServlet(name = "ViewDoctorsServlet", urlPatterns = {"/view_doctors"})
-public class ViewDoctorsServlet extends HttpServlet {
+@WebServlet(name = "ViewPatientServlet", urlPatterns = {"/view_patients"})
+public class ViewPatientServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             Class.forName(DRIVER);
             try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                 PreparedStatement statement = connection.prepareStatement("select * from doctors_viewing")) {
+                 PreparedStatement statement = connection.prepareStatement("select * from patient_viewing")) {
                 statement.executeQuery();
 
                 ResultSet resultSet = statement.getResultSet();
 
-                List<String[]> doctors = new ArrayList<>();
+                List<String[]> patient = new ArrayList<>();
                 while (resultSet.next()) {
                     String[] entry = new String[]{
                             resultSet.getString("u_name"),
                             resultSet.getString("u_surname"),
-                            resultSet.getString("doctors_speciality"),
                             resultSet.getString("u_email"),
-                            resultSet.getString("u_login")};
-                    doctors.add(entry);
+                            resultSet.getString("u_login"),
+                            resultSet.getString("u_role")};
+                    patient.add(entry);
                 }
-                request.setAttribute("doctorList", doctors);
-                getServletContext().getRequestDispatcher("/doctors.jsp").forward(request, response);
+                request.setAttribute("patientList", patient);
+                getServletContext().getRequestDispatcher("/patients.jsp").forward(request, response);
             } catch (SQLException e) {
                 e.printStackTrace();
                 getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);

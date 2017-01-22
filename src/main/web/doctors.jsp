@@ -80,6 +80,16 @@
                     <tr>
                         <input type = "text" value="${item[3]}" align="centre" readonly>
                     </tr>
+                    <tr>
+                        <c:if test="${!empty sessionScope.login}">
+                        <c:choose>
+                        <c:when test="${sessionScope.user_role == 'm'}">
+                        <input type = "text" value="${item[4]}" align="centre" readonly>
+                        </c:when></c:choose>
+                        </c:if>
+
+
+                    </tr>
                 </table>
             </td>
             </c:forEach>
