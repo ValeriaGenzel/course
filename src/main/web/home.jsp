@@ -5,28 +5,6 @@
     <title>Home</title>
 </head>
 <body>
-    <a href="<c:url value="/home.jsp"/>">Home</a>
-    <form method="post" action="view_doctors">
-        <input type="hidden" name="action" value="view_doctors">
-        <input type="submit" value="Doctors"/>
-    </form>
-    <form method="post" action="view_diseases">
-        <input type="hidden" name="action" value="view_diseases">
-        <input type="submit" value="Diseases"/>
-    </form>
-    <a href="<c:url value="/registration.jsp"/>">Registration</a>
-    <%--<c: if test="${empty sessionScope.user_login}">--%>
-        <%--<form method="post" action="login_s">--%>
-            <%--<input type="hidden" name="action" value="in">--%>
-            <%--<input type="submit" value="Login"/>--%>
-        <%--</form>--%>
-        <%--<a href="<c:url value="/login.jsp"/>">Login</a>--%>
-    <%--</c:>--%>
-    <form method="post" action="view_main_doctor">
-        <input type="hidden" name="action" value="view_main_doctor">
-        <input type="submit" value="Contacts"/>
-    </form>
-
 
     <c:if test="${!empty sessionScope.user_login}">
         <form method="post" action="login_s">
@@ -37,6 +15,34 @@
             <a href="<c:url value="/diseaseHistory.jsp"/>">Disease history</a>
         </form>
     </c:if>
+
+    <a href="<c:url value="/home.jsp"/>">Home</a>
+
+    <form method="post" action="view_doctors">
+        <input type="hidden" name="action" value="view_doctors">
+        <input type="submit" value="Doctors"/>
+    </form>
+
+    <form method="post" action="view_diseases">
+        <input type="hidden" name="action" value="view_diseases">
+        <input type="submit" value="Diseases"/>
+    </form>
+
+    <a href="<c:url value="/registration.jsp"/>">Registration</a>
+
+    <%--<c: if test="${!sessionScope.user_login}">--%>
+        <%--<form method="post" action="login_s">--%>
+            <%--<input type="hidden" name="action" value="out">--%>
+            <%--<input type="submit" value="Login"/>--%>
+        <%--</form>--%>
+    <%--</c:>--%>
+    <form method="post" action="view_main_doctor">
+        <input type="hidden" name="action" value="view_main_doctor">
+        <input type="submit" value="Contacts"/>
+    </form>
+
+
+
 
 </body>
 </html>

@@ -4,60 +4,104 @@
 <head>
     <title>Personal Page</title>
 </head>
-<body>
-<%--<c:if test="${!empty sessionScope.login}">
-    <form method="post" action="login_s">
-        Hello, ${sessionScope.user_login}!
-        <input type="hidden" name="action" value="out">
-        <input type="submit" value="Logout"/>
-     </form>
-    <br>
-    <form>
-        <input type="text" name="login" value="${requestScope.login}" readonly>
-        <input type="text" name="name" value="${requestScope.name}">
-        <input type="text" name="surname" value="${requestScope.surname}">
-        <input type="text" name="password" value="${requestScope.name}" >
-    </form>>
-    </c:if>--%>
-    <a href="<c:url value="/home.jsp"/>">Home</a>
-    <a href="<c:url value="/doctors.jsp"/>">Doctors</a>
-    <a href="<c:url value="/diseases.jsp"/>">Diseases</a>
-    <a href="<c:url value="/registration.jsp"/>">Registration</a>
-    <a href="<c:url value="/login.jsp"/>">Login</a>
-    <a href="<c:url value="/contacts.jsp"/>">Contacts</a>
+<c:if test="${!empty sessionScope.user_login}">
+    <header>
+        <form method="post" action="login">
+            Hello, ${sessionScope.user_login}!
+            <input type="hidden" name="command" value="logout">
+            <input type="submit" value="Logout"/>
+        </form>
+        <br/>
+        <form method="post" action="ceremony_switch">
+            <input type="submit" value="manage ceremony">
+        </form>
+        <form method="post" action="contact">
+            <input type="submit" value="contact manager">
+        </form>
+        <a href="<c:url value="/about.jsp"/>">About</a>
+        <form method="post" action="personal_page">
+            <input name="command" type="hidden" value="load">
+            <input type="submit" value="personal page">
+        </form>
+    </header>
+    <c:choose>
+        <c:when test="${!sessionScope.user_is_manager}">
+            <form method="post" action="personal_page">
+                Personal information<br>
+                <label>
+                    User name (login) :
+                    <input type="text" name="user_name" value="${requestScope.user_name}" readonly>
+                </label> <br>
+                <label>
+                    Email :
+                    <input type="text" name="user_email" value="${requestScope.user_email}" readonly>
+                </label> <br>
+                <label>
+                    User status :
+                    <input type="text" name="user_status" value="${requestScope.user_status}" readonly>
+                </label> <br><br>
 
-    <form action="edit_profile_s" method="post">
-        <label>
-            login
-            <input type="text" name="login" value="${requestScope.userLogin}" required readonly> <br>
-        </label>
-        <label>
-            password
-            <input type="name" name="name" value="${requestScope.userName}" required> <br>
-        </label>
-        <label>
-            password
-            <input type="surname" name="surname" value="${requestScope.userSurname}" required> <br>
-        </label>
-        <label>
-            password
-            <input type="password" name="password" value="${requestScope.userPasswordOld}" required> <br>
-        </label>
-        <label>
-            confirm password
-            <input type="password" name="confirm" value="${requestScope.userPasswordOld}" required> <br>
-        </label>
-        <label>
-            email
-            <input type="email" name="email" value="${requestScope.userEmail}" required> <br>
-        </label>
-        <label>
-            tel
-            <input type="tel" name="tel" value="${requestScope.userTel}" required> <br>
-        </label>
-        <input type="hidden" name="action" value="in">
-        <input type="submit" value="sign in">
-    </form>
+                <label>
+                    Groom name :
+                    <input type="text" name="user_groom_name" value="${requestScope.user_groom_name}" pattern="[a-zA-Z].{6,40}" required>
+                </label> <br>
+                <label>
+                    Groom surname :
+                    <input type="text" name="user_groom_surname" value="${requestScope.user_groom_surname}" pattern="[a-zA-Z].{6,40}" required>
+                </label> <br>
+                <label>
+                    Groom birthday :
+                    <input type="date" name="user_groom_birthday" value="${requestScope.user_groom_birthday}" pattern="[a-zA-Z].{6,40}" required>
+                </label> <br><br>
 
+                <label>
+                    Bride name :
+                    <input type="text" name="user_bride_name" value="${requestScope.user_bride_name}" pattern="[a-zA-Z].{6,40}" required>
+                </label> <br>
+                <label>
+                    Bride surname :
+                    <input type="text" name="user_bride_surname" value="${requestScope.user_bride_surname}" pattern="[a-zA-Z].{6,40}" required>
+                </label> <br>
+                <label>
+                    Bride birthday :
+                    <input type="date" name="user_bride_birthday" value="${requestScope.user_bride_birthday}" pattern="[a-zA-Z].{6,40}" required>
+                </label> <br><br>
+                <label>
+                    Enter password to apply changes :
+                    <input type="password" name="user_password" required pattern="[a-zA-Z0-9].{6,40}">
+                </label> <br>
+
+                <input name="command" type="hidden" value="update">
+                <input type="submit" value="update personal data">
+            </form>
+            <form method="post" action="change_password">
+                Change password<br>
+                <label>
+                    Old password :
+                    <input type="password" name="old_password" required pattern="[a-zA-Z0-9].{6,40}">
+                </label><br>
+                <label>
+                    New password :
+                    <input type="password" name="new_password" required pattern="[a-zA-Z0-9].{6,40}">
+                </label><br>
+                <label>
+                    Repeat new password :
+                    <input type="password" name="new_password_2" required pattern="[a-zA-Z0-9].{6,40}">
+                </label><br>
+                <input type="submit" value="change password">
+            </form>
+        </c:when>
+        <c:when test="${sessionScope.user_is_manager}">
+            <form method="post" action="promotion">
+                <label>
+                    Enter password to apply changes :
+                    <input type="password" name="user_password" required pattern="[a-zA-Z0-9].{6,40}">
+                </label><br>
+                <input type="hidden" name="new_man" value="${sessionScope.user_login}">
+                <input type="submit" value="become regular user">
+            </form>
+        </c:when>
+    </c:choose>
+</c:if>
 </body>
 </html>
