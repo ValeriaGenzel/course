@@ -18,7 +18,8 @@ public class PersonalPageServlet extends HttpServlet {
         try {
             Class.forName(DRIVER);
             try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                 PreparedStatement statement = connection.prepareStatement("select * from personal_page_view")) {
+                 PreparedStatement statement = connection.prepareStatement("select * from personal_page_view " +
+                         "WHERE u_login = '" + req.getSession().getAttribute("login") +"'")) {
                 statement.executeQuery();
 
                 ResultSet resultSet = statement.getResultSet();
@@ -30,13 +31,12 @@ public class PersonalPageServlet extends HttpServlet {
 
                     req.setAttribute("password", resultSet.getString(4));
                     req.setAttribute("email", resultSet.getString(5));
-                    req.setAttribute("user_groom_birthday", resultSet.getDate(6));
 
-                    req.setAttribute("tel", resultSet.getString(7));
-                    req.setAttribute("spec", resultSet.getString(8));
+                    req.setAttribute("tel", resultSet.getString(6));
+                    req.setAttribute("spec", resultSet.getString(7));
 
                     statement.close();
-                    getServletContext().getRequestDispatcher("/personal_page.jsp").forward(req, resp);
+                    getServletContext().getRequestDispatcher("/editProfile.jsp").forward(req, resp);
                 } else {
                     req.setAttribute("problem", "failed to get personal data");
                     statement.close();

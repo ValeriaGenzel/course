@@ -84,12 +84,12 @@
                         <input type="text" name="surname" value="${requestScope.surname}" >
                     </label> <br>
                     <label>
-                        Password :
+                        New Password :
                         <input type="password" name="password" value="${requestScope.password}" >
                     </label> <br>
                     <label>
                         Confirm Password :
-                        <input type="password" name="password" value="${requestScope.password}" >
+                        <input type="password" name="passwordConfirm" value="${requestScope.password}" >
                         <br>
                     </label> <br>
                     <label>
@@ -101,7 +101,11 @@
                         <input type="text" name="tel" value="${requestScope.tel}" >
                     </label> <br>
 
-
+                    <label>
+                        Password :
+                        <input type="password" name="passwordOld" required>
+                    </label> <br>
+                    <input type="submit" value="Update personal info">
 
                 </form>
                 <form method="post" action="view_main_doctor">

@@ -33,7 +33,7 @@ public class EditProfileServlet extends HttpServlet {
 
                         statement.setString(1, userLogin);
                         statement.setString(2, userPasswordOld);
-                        statement.setString(3,userName);
+                        statement.setString(3, userName);
                         statement.setString(4, userSurname);
                         statement.setString(5, userPassword);
                         statement.setString(6, userPasswordConfirm);
@@ -49,7 +49,7 @@ public class EditProfileServlet extends HttpServlet {
                         if ("Successful editing".equals(editingStatus)) {
                             HttpSession session = req.getSession();
                             session.setAttribute("login", userLogin);
-                            getServletContext().getRequestDispatcher("/editProfile.jsp").forward(req, resp);
+                            getServletContext().getRequestDispatcher("/personal_page").forward(req, resp);
                         } else {
                             req.setAttribute("error_msg", editingStatus);
                             getServletContext().getRequestDispatcher("/error.jsp").forward(req, resp);

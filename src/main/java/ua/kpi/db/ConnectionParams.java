@@ -1,34 +1,38 @@
 package ua.kpi.db;
 
-import java.sql.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * Created by Valeria on 19.01.2017.
  */
 public class ConnectionParams {
 
-    public static final String  DRIVER = "oracle.jdbc.OracleDriver";
-    public static final String  URL = "jdbc:oracle:thin:@//localhost:1521/orcl";
-    public static final String  USER = "Valeria" ;
-    public static final String  PASSWORD = "781227";
+    public static final String DRIVER;
+    public static final String URL;
+    public static final String USER;
+    public static final String PASSWORD;
 
-    public static void main(String[] args) {
+    static {
+        Properties properties = new Properties();
         try {
-            Class.forName(DRIVER);
-            try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                 PreparedStatement statement = connection.prepareStatement("select * from users")) {
-                statement.executeQuery();
-                ResultSet resultSet = statement.getResultSet();
-
-                while(resultSet.next()) {
-                    System.out.println(resultSet.getString("u_name"));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } catch (ClassNotFoundException e) {
+            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+            InputStream input = classloader.getResourceAsStream("connection.properties");
+            properties.load(input);
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
+        DRIVER = properties.getProperty("driver");
+        URL = properties.getProperty("url");
+        USER = properties.getProperty("login");
+        PASSWORD = properties.getProperty("password");
+
+        System.out.println(DRIVER);
+        System.out.println(URL);
+        System.out.println(USER);
+        System.out.println(PASSWORD);
     }
 
 }
