@@ -22,54 +22,47 @@ import static ua.kpi.db.ConnectionParams.*;
 public class UpdateDiseaseServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        switch (req.getParameter("action")) {
-            case "in":
-                try {
-                    Class.forName(DRIVER);
-                    try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                         CallableStatement statement = connection.prepareCall("{call disease_update(?, ?, ?, ?, ?)}")) {
 
-                        String doctorLogin = req.getParameter("login");
-                        String doctorPassword = req.getParameter("password");
-                        String diseaseName = req.getParameter("dName");
-                        String description = req.getParameter("desc");
+        try {
+            Class.forName(DRIVER);
+            try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+                 CallableStatement statement = connection.prepareCall("{call disease_update(?, ?, ?, ?, ?)}")) {
 
-                        statement.setString(1, doctorLogin);
-                        statement.setString(2, doctorPassword);
-                        statement.setString(3, diseaseName);
-                        statement.setString(4, description);
+                String doctorLogin = (String) req.getSession().getAttribute("login");
+                String doctorPassword = req.getParameter("password");
+                String diseaseName = req.getParameter("dName");
+                String description = req.getParameter("desc");
 
-                        statement.registerOutParameter(5, Types.VARCHAR);
+                statement.setString(1, doctorLogin);
+                statement.setString(2, doctorPassword);
+                statement.setString(3, diseaseName);
+                statement.setString(4, description);
 
-                        statement.executeQuery();
+                statement.registerOutParameter(5, Types.VARCHAR);
 
-                        String addingStatus = (String) statement.getObject(5);
+                statement.executeQuery();
 
-                        if ("Successful updating".equals(addingStatus)) {
+                String addingStatus = (String) statement.getObject(5);
 
-                            HttpSession session = req.getSession();
+                if ("Successful updating".equals(addingStatus)) {
 
-                            getServletContext().getRequestDispatcher("/disease.jsp").forward(req, resp);
-                        } else {
-                            req.setAttribute("error_msg", addingStatus);
-                            getServletContext().getRequestDispatcher("/error.jsp").forward(req, resp);
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        getServletContext().getRequestDispatcher("/error.jsp").forward(req, resp);
-                    }
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                    HttpSession session = req.getSession();
+                    session.setAttribute("login", doctorLogin);
+
+                    getServletContext().getRequestDispatcher("/view_diseases.jsp").forward(req, resp);
+                } else {
+                    req.setAttribute("error_msg", addingStatus);
                     getServletContext().getRequestDispatcher("/error.jsp").forward(req, resp);
                 }
-                break;
-            case "out":
-                req.getSession().invalidate();
-                getServletContext().getRequestDispatcher("/home.jsp").forward(req, resp);
-                break;
-            default:
+            } catch (SQLException e) {
+                e.printStackTrace();
                 getServletContext().getRequestDispatcher("/error.jsp").forward(req, resp);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            getServletContext().getRequestDispatcher("/error.jsp").forward(req, resp);
         }
+
     }
 }
 

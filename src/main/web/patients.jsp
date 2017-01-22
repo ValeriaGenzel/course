@@ -1,18 +1,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Home</title>
 </head>
 <body>
-<br>
+
 <table>
     <tr>
         <td>
-            <img src="" width="1110" height="250" alt=""/>
-        </td>
-        <td bgcolor="">
             <c:if test="${!empty sessionScope.login}">
                 <form method="post" action="login_s">
                     Hello, ${sessionScope.login}!
@@ -24,18 +20,17 @@
             </c:if>
             <c:if test="${empty sessionScope.login}">
                 <a href="<c:url value="/login.jsp"/>">Login</a>
-                <br>
                 <a href="<c:url value="/registration.jsp"/>">Registration</a>
             </c:if>
-            <br>
         </td>
     </tr>
 </table>
+<br>
 <table align="center" width="80%" border="0">
     <tr>
         <td>
             <header class="menu">
-                <table align="center" border="1">
+                <table align="center" border="0">
                     <tr>
                         <td>
                             <a href="<c:url value="/home.jsp"/>">Home</a></td>
@@ -57,41 +52,50 @@
                                 <input type="submit" value="Contacts"/>
                             </form>
                         </td>
-                        </td> </tr>
-                    <td>
+                    </tr>
+                </table>
+            </header>
+            <br>
+            <hr>
+        </td>
+    </tr>
+    <br>
+    <tr>
+        <c:if test="${!empty sessionScope.login}">
+            <c:choose>
+                <c:when test="${sessionScope.user_role == 'm'}">
+                    <c:forEach items="${requestScope.patientList}" var="item">
+                        <input type = "text" value="${item[0]}" align="centre" readonly>
+                        <input type = "text" value="${item[1]}" align="centre" readonly>
+                        <input type = "text" value="${item[2]}" align="centre" readonly>
+                        <input type = "text" value="${item[3]}" align="centre" readonly>
+                        <input type = "text" value="${item[4]}" align="centre" readonly>
 
-                    </td>
+                    </c:forEach>
+                    <form method="post" action="ban_s">
 
-                </table></header>
+                        <input type = "text" name="uLogin">
+                        <input type = "text" name="password">
+                        <input type="submit" name="ban user"/>
+                    </form>
+                    <form method="post" action="unban_s">
 
-            <c:if test="${!empty sessionScope.login}">
-                <c:choose>
-                    <c:when test="${sessionScope.user_role == 'm'}">
-                        <c:forEach items="${requestScope.patientList}" var="item">
-                            <input type = "text" value="${item[0]}" align="centre" readonly>
-                            <input type = "text" value="${item[1]}" align="centre" readonly>
-                            <input type = "text" value="${item[2]}" align="centre" readonly>
-                            <input type = "text" value="${item[3]}" align="centre" readonly>
-                            <input type = "text" value="${item[4]}" align="centre" readonly>
+                        <input type = "text" name="uLogin">
+                        <input type = "text" name="password">
+                        <input type="submit" name="unban user"/>
+                    </form>
+                </c:when></c:choose>
+        </c:if>
 
-                        </c:forEach>
-            <form method="post" action="ban_s">
-
-                <input type = "text" name="uLogin">
-                <input type = "text" name="password">
-                <input type="submit" name="ban user"/>
-            </form>
-            <form method="post" action="unban_s">
-
-                <input type = "text" name="uLogin">
-                <input type = "text" name="password">
-                <input type="submit" name="unban user"/>
-            </form>
-                    </c:when></c:choose>
-            </c:if>
-
-
-
-
+    </tr>
+    <hr>
+    <tr>
+        <td>
+            <footer align="center">
+                @CopyRight
+            </footer>
+        </td>
+    </tr>
+</table>
 </body>
 </html>

@@ -2,17 +2,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Home</title>
 </head>
 <body>
 
-<br>
 <table>
     <tr>
         <td>
-            <img src="" width="1110" height="250" alt=""/>
-        </td>
-        <td bgcolor="">
             <c:if test="${!empty sessionScope.login}">
                 <form method="post" action="login_s">
                     Hello, ${sessionScope.login}!
@@ -23,22 +19,18 @@
                 </form>
             </c:if>
             <c:if test="${empty sessionScope.login}">
-                <form method="post" action="login_s">
-                    <input type="hidden" name="action" value="in">
-                    <input type="submit" value="Login"/>
-                </form>
-                <br>
+                <a href="<c:url value="/login.jsp"/>">Login</a>
                 <a href="<c:url value="/registration.jsp"/>">Registration</a>
             </c:if>
-            <br>
         </td>
     </tr>
 </table>
+<br>
 <table align="center" width="80%" border="0">
     <tr>
         <td>
             <header class="menu">
-                <table align="center" border="1">
+                <table align="center" border="0">
                     <tr>
                         <td>
                             <a href="<c:url value="/home.jsp"/>">Home</a></td>
@@ -51,7 +43,7 @@
                         <td>
                             <form method="post" action="view_diseases">
                                 <input type="hidden" name="action" value="view_main_doctor">
-                                <input type="submit" value="Contacts"/>
+                                <input type="submit" value="Diseases"/>
                             </form>
                         </td>
                         <td>
@@ -61,14 +53,13 @@
                             </form>
                         </td>
                     </tr>
-
                 </table>
-            </header><br>
-            <hr/>
+            </header>
+            <br>
+            <hr>
         </td>
     </tr>
     <br>
-    <hr>
     <tr>
         <c:forEach items="${requestScope.diseaseList}" var="item">
             <table align="centre">
@@ -95,15 +86,24 @@
                         <input type = "text" name="dName">
                         <input type = "text" name="sName">
                         <input type = "text" name="desc">
-
                         <input type = "text" name="password">
                         <input type="submit" name="add disease"/>
                     </form>
+
+                    <form method="post" action="update_disease_s">
+
+                        <input type = "text" name="dName">
+                        <input type = "text" name="desc">
+                        <input type = "text" name="password">
+                        <input type="submit" name="update disease"/>
+                    </form>
+
 
                 </c:when>
             </c:choose>
         </c:if>
     </tr>
+    <hr>
     <tr>
         <td>
             <footer align="center">

@@ -17,6 +17,7 @@
                     <a href="<c:url value="/editProfile.jsp"/>">Personal page</a>
                     <a href="<c:url value="/diseaseHistory.jsp"/>">Disease history</a>
                 </form>
+
                 </c:if>
                 <c:if test="${empty sessionScope.login}">
                     <a href="<c:url value="/login.jsp"/>">Login</a>
@@ -51,6 +52,19 @@
                                     <input type="hidden" name="action" value="view_main_doctor">
                                     <input type="submit" value="Contacts"/>
                                 </form>
+                            </td>
+                            <td>
+                                <c:if test="${!empty sessionScope.login}">
+                                    <c:choose>
+                                        <c:when test="${sessionScope.user_role == 'm'}">
+                                            <form method="post" action="view_patients">
+                                                <input type="hidden" name="action" value="view_patients">
+                                                <input type="submit" value="Patients"/>
+                                            </form>
+                                        </c:when>
+                                    </c:choose>
+                                </c:if>
+
                             </td>
                         </tr>
                     </table>
