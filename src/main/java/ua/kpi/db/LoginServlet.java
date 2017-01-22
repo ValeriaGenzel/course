@@ -53,6 +53,7 @@ public class LoginServlet extends HttpServlet {
                                 session.setAttribute("user_role", "u");
                             }
                             session.setAttribute("login", userLogin);
+//                            session.setAttribute("password", userPassword);
                             getServletContext().getRequestDispatcher("/home.jsp").forward(req, resp);
                         } else {
                             req.setAttribute("error_msg", authorizationStatus);

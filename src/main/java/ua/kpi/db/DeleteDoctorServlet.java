@@ -26,8 +26,8 @@ public class DeleteDoctorServlet extends HttpServlet {
                     try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
                          CallableStatement statement = connection.prepareCall("{call delete_doctor(?, ?, ?, ?)}")) {
 
-                        String mainDoctorLogin = req.getParameter("MDlogin");
-                        String mainDoctorPassword = req.getParameter("MDpassword");
+                        String mainDoctorLogin = req.getParameter("login");
+                        String mainDoctorPassword = req.getParameter("password");
                         String doctorLogin = req.getParameter("login");
 
                         statement.setString(1, mainDoctorLogin);
@@ -40,11 +40,12 @@ public class DeleteDoctorServlet extends HttpServlet {
 
                         String deleteStatus = (String) statement.getObject(4);
 
-                        if ("Succsseful deleting".equals(deleteStatus)) {
+                        if ("Successful deleting".equals(deleteStatus)) {
 
                             HttpSession session = req.getSession();
+                            session.setAttribute("login", mainDoctorLogin);
 
-                            getServletContext().getRequestDispatcher("/doctors.jsp").forward(req, resp);
+                            getServletContext().getRequestDispatcher("/view_doctors.jsp").forward(req, resp);
                         } else {
                             req.setAttribute("error_msg", deleteStatus);
                             getServletContext().getRequestDispatcher("/error.jsp").forward(req, resp);
