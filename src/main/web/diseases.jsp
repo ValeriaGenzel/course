@@ -64,13 +64,13 @@
         <c:forEach items="${requestScope.diseaseList}" var="item">
             <table align="centre">
                 <tr>
-                    <input type = "text" value="${item[0]}" align="centre" readonly>
+                    <input type = "text" value="${item[0]}" align="centre" readonly >
                 </tr>
                 <tr>
                     <input type = "text" value="${item[1]}" align="centre" readonly>
                 </tr>
                 <tr>
-                    <input type = "text" value="${item[2]}" align="centre" readonly>
+                    <input type = "text" value="${item[2]}" align="centre" readonly size="80">
                 </tr>
 
             </table>
@@ -80,22 +80,27 @@
         <c:if test="${!empty sessionScope.login}">
             <c:choose>
                 <c:when test="${sessionScope.user_role == 'd'}">
-
+                    <h4>To add new disease input</h4>
                     <form method="post" action="add_disease_s">
-
-                        <input type = "text" name="dName">
-                        <input type = "text" name="sName">
-                        <input type = "text" name="desc">
-                        <input type = "text" name="password">
-                        <input type="submit" name="add disease"/>
+                        Disease name: <br>
+                        <input type = "text" name="dName" required pattern="[a-zA-Z]{1,30}" placeholder="Disease name"><br>
+                        Simptom name:<br>
+                        <input type = "text" name="sName" required pattern="[a-zA-Z]{1,30}" placeholder="Simptom name"><br>
+                        Disease description:<br>
+                        <input type = "text" name="desc" pattern="[a-zA-Z0-9]{1,80}" placeholder="Disease description"><br>
+                        Doctor`s password:<br>
+                        <input type = "text" name="password" required pattern="[a-zA-Z0-9]{1,20}" placeholder="Password"><br>
+                        <input type="submit" name="add disease" value="Add disease"/>
                     </form>
-
+                    <h4>To update disease input</h4>
                     <form method="post" action="update_disease_s">
-
-                        <input type = "text" name="dName">
-                        <input type = "text" name="desc">
-                        <input type = "text" name="password">
-                        <input type="submit" name="update disease"/>
+                        Disease name: <br>
+                        <input type = "text" name="dName" required pattern="[a-zA-Z]{1,30}" placeholder="Disease name"><br>
+                        Disease description:<br>
+                        <input type = "text" name="desc" pattern="[a-zA-Z0-9]{1,80}" placeholder="Disease description"><br>
+                        Doctor`s password:<br>
+                        <input type = "text" name="password" required pattern="[a-zA-Z0-9]{1,20}" placeholder="Password"><br>
+                        <input type="submit" name="update disease" value="Update disease" />
                     </form>
 
 
