@@ -5,39 +5,32 @@
     <title>Home</title>
 </head>
 <body>
-    <br>
+
     <table>
         <tr>
             <td>
-                <img src="" width="1110" height="250" alt=""/>
-            </td>
-            <td bgcolor="">
                 <c:if test="${!empty sessionScope.login}">
-                    <form method="post" action="login_s">
-                        Hello, ${sessionScope.login}!
-                        <input type="hidden" name="action" value="out">
-                        <input type="submit" value="Logout"/>
-                        <a href="<c:url value="/editProfile.jsp"/>">Personal page</a>
-                        <a href="<c:url value="/diseaseHistory.jsp"/>">Disease history</a>
-                    </form>
+                <form method="post" action="login_s">
+                    Hello, ${sessionScope.login}!
+                    <input type="hidden" name="action" value="out">
+                    <input type="submit" value="Logout"/>
+                    <a href="<c:url value="/editProfile.jsp"/>">Personal page</a>
+                    <a href="<c:url value="/diseaseHistory.jsp"/>">Disease history</a>
+                </form>
                 </c:if>
                 <c:if test="${empty sessionScope.login}">
-                    <form method="post" action="login_s">
-                        <input type="hidden" name="action" value="in">
-                        <input type="submit" value="Login"/>
-                    </form>
-                    <br>
+                    <a href="<c:url value="/login.jsp"/>">Login</a>
                     <a href="<c:url value="/registration.jsp"/>">Registration</a>
                 </c:if>
-                <br>
             </td>
         </tr>
     </table>
+    <br>
     <table align="center" width="80%" border="0">
         <tr>
             <td>
                 <header class="menu">
-                    <table align="center" border="1">
+                    <table align="center" border="0">
                         <tr>
                             <td>
                                 <a href="<c:url value="/home.jsp"/>">Home</a></td>
@@ -50,7 +43,7 @@
                             <td>
                                 <form method="post" action="view_diseases">
                                     <input type="hidden" name="action" value="view_main_doctor">
-                                    <input type="submit" value="Contacts"/>
+                                    <input type="submit" value="Diseases"/>
                                 </form>
                             </td>
                             <td>
@@ -61,13 +54,13 @@
                             </td>
                         </tr>
                     </table>
-                </header><br>
+                </header>
+                <br>
                 <hr>
             </td>
         </tr>
         <br>
         <tr>
-
 
         </tr>
         <hr>

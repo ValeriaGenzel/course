@@ -89,12 +89,12 @@
                     </label> <br>
                     <label>
                         Confirm Password :
-                        <input type="password" name="password" value="${requestScope.passwordConfirm}" >
+                        <input type="password" name="password" value="${requestScope.password}" >
                         <br>
                     </label> <br>
                     <label>
                         Email :
-                        <input type="text" name="password" value="${requestScope.email}" >
+                        <input type="text" name="email" value="${requestScope.email}" >
                     </label> <br>
                     <label>
                         Tel :
@@ -102,8 +102,11 @@
                     </label> <br>
 
 
-                    <input name="command" type="hidden" value="update">
-                    <input type="submit" value="update personal data">
+
+                </form>
+                <form method="post" action="view_main_doctor">
+                    <input type="hidden" name="action" value="view_main_doctor">
+                    <input type="submit" value="Contacts"/>
                 </form>
 
             </c:if>

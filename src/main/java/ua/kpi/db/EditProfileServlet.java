@@ -48,6 +48,7 @@ public class EditProfileServlet extends HttpServlet {
 
                         if ("Successful editing".equals(editingStatus)) {
                             HttpSession session = req.getSession();
+                            session.setAttribute("login", userLogin);
                             getServletContext().getRequestDispatcher("/editProfile.jsp").forward(req, resp);
                         } else {
                             req.setAttribute("error_msg", editingStatus);

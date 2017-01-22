@@ -44,6 +44,7 @@ public class RegistrationServlet extends HttpServlet {
 
                 if ("Successful registration".equals(registrationStatus)) {
                     HttpSession session = req.getSession();
+                    session.setAttribute("login", userLogin);
                     getServletContext().getRequestDispatcher("/home.jsp").forward(req, resp);
                 } else {
                     req.setAttribute("error_msg", registrationStatus);

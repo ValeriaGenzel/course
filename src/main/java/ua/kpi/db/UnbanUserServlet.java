@@ -19,51 +19,44 @@ import static ua.kpi.db.ConnectionParams.*;
 public class UnbanUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        switch (req.getParameter("action")) {
-            case "in":
-                try {
-                    Class.forName(DRIVER);
-                    try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                         CallableStatement statement = connection.prepareCall("{call unban_user(?, ?, ?, ?)}")) {
 
-                        String mainDoctorLogin = req.getParameter("MDlogin");
-                        String mainDoctorPassword = req.getParameter("MDpassword");
-                        String userLogin = req.getParameter("login");
+        try {
+            Class.forName(DRIVER);
+            try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+                 CallableStatement statement = connection.prepareCall("{call unban_user(?, ?, ?, ?)}")) {
 
-                        statement.setString(1, mainDoctorLogin);
-                        statement.setString(2, mainDoctorPassword);
-                        statement.setString(3, userLogin );
+                String mainDoctorLogin = (String) req.getSession().getAttribute("login");
+                String mainDoctorPassword = req.getParameter("password");
+                String userLogin = req.getParameter("uLogin");
 
-                        statement.registerOutParameter(4, Types.VARCHAR);
+                statement.setString(1, mainDoctorLogin);
+                statement.setString(2, mainDoctorPassword);
+                statement.setString(3, userLogin);
 
-                        statement.executeQuery();
+                statement.registerOutParameter(4, Types.VARCHAR);
 
-                        String addingStatus = (String) statement.getObject(5);
+                statement.executeQuery();
 
-                        if ("Successful unbaned".equals(addingStatus)) {
+                String addingStatus = (String) statement.getObject(5);
 
-                            HttpSession session = req.getSession();
+                if ("Successful unbaned".equals(addingStatus)) {
 
-                            getServletContext().getRequestDispatcher("/users.jsp").forward(req, resp);
-                        } else {
-                            req.setAttribute("error_msg", addingStatus);
-                            getServletContext().getRequestDispatcher("/error.jsp").forward(req, resp);
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        getServletContext().getRequestDispatcher("/error.jsp").forward(req, resp);
-                    }
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                    HttpSession session = req.getSession();
+                    session.setAttribute("login", mainDoctorLogin);
+
+                    getServletContext().getRequestDispatcher("//view_patients").forward(req, resp);
+                } else {
+                    req.setAttribute("error_msg", addingStatus);
                     getServletContext().getRequestDispatcher("/error.jsp").forward(req, resp);
                 }
-                break;
-            case "out":
-                req.getSession().invalidate();
-                getServletContext().getRequestDispatcher("/home.jsp").forward(req, resp);
-                break;
-            default:
+            } catch (SQLException e) {
+                e.printStackTrace();
                 getServletContext().getRequestDispatcher("/error.jsp").forward(req, resp);
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            getServletContext().getRequestDispatcher("/error.jsp").forward(req, resp);
         }
+
     }
 }

@@ -85,6 +85,11 @@
                         <c:choose>
                         <c:when test="${sessionScope.user_role == 'm'}">
                         <input type = "text" value="${item[4]}" align="centre" readonly>
+                            <form method="post" action="view_patients">
+                                <input type="hidden" name="action" value="view_patients">
+                                <input type="submit" value="patients"/>
+                            </form>
+                            </td>
                         </c:when></c:choose>
                         </c:if>
 
