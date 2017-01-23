@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,11 +19,15 @@ public class ViewDiseaseHistServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             Class.forName(DRIVER);
-            String uLogin = (String) request.getSession().getAttribute("login");
-            System.out.println(uLogin);
+            HttpSession session = request.getSession();
+            String uLogin = (String) session.getAttribute("login");
+            String query = "select * from disease_history_viewing";
+            String whereUser = " where u_login = '" + uLogin + "'";
+            if (session.getAttribute("user_role").equals("u")) {
+                query = query + whereUser;
+            }
             try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                 PreparedStatement statement = connection.prepareStatement(
-                         "select * from disease_history_viewing where u_login = '"+ uLogin +"'")) {
+                 PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.executeQuery();
 
                 ResultSet resultSet = statement.getResultSet();

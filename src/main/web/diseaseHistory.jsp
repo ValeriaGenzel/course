@@ -78,6 +78,9 @@
                     <td><input type="text" value="${item[2]}" align="centre" readonly></td>
                     <td><input type="text" value="${item[3]}" align="centre" readonly></td>
                     <td><input type="text" value="${item[4]}" align="centre" readonly></td>
+                        <c:if test="${sessionScope.user_role == 'd'}">
+                            <td><input type="text" value="${item[5]}" align="centre" readonly></td>
+                        </c:if>
                     </tr>
                 </c:forEach>
                 <%--</c:when>--%>
