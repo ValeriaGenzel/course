@@ -21,7 +21,9 @@
                 <form method="post" action="personal_page">
                     <input type="submit" value="Personal page">
                 </form>
-                <a href="<c:url value="/diseaseHistory.jsp"/>">Disease history</a>
+                <form method="post" action="view_history">
+                    <input type="submit" value="Disease history">
+                </form>
 
             </c:if>
             <c:if test="${empty sessionScope.login}">
