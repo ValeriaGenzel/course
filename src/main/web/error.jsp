@@ -9,7 +9,7 @@
         <br>
         ${requestScope.error_msg}
         <br>
-// commit suicide
+<%-- commit suicide--%>
         <a href="<c:url value="/home.jsp"/>">Back home</a>
     </body>
 </html>

@@ -66,6 +66,7 @@
 
     <tr align="centre">
         <td>
+
             <c:forEach items="${requestScope.mainDoctorList}" var="item">
                 <table border = "0">
                     <tr>
@@ -77,6 +78,20 @@
                     </tr>
                 </table>
             </c:forEach>
+        </td
+
+        <td>
+            <table border = "0">
+            <tr>Simptoms:</tr>
+            <c:forEach items="${requestScope.simptomsList}" var="item">
+
+                    <tr><td>
+                        <input type = "text" value="${item[0]}" readonly><td>
+
+                    </tr>
+
+            </c:forEach>
+            </table>
         </td>
     </tr>
    <br>

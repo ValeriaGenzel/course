@@ -25,6 +25,7 @@
                     <input type="submit" value="Disease history">
                 </form>
 
+
             </c:if>
             <c:if test="${empty sessionScope.login}">
                 <a href="<c:url value="/login.jsp"/>">Login</a><br>
@@ -58,6 +59,12 @@
                             <form method="post" action="view_main_doctor">
                                 <input type="hidden" name="action" value="view_main_doctor">
                                 <input type="submit" value="Contacts"/>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="post" action="view_simptoms">
+                                <input type="hidden" name="action" value="view_somptom">
+                                <input type="submit" value="Simptoms"/>
                             </form>
                         </td>
                         <td>

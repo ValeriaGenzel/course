@@ -81,24 +81,24 @@
                     </label> <br>
                     <label>
                         Name :
-                        <input type="text" name="name" value="${requestScope.name}" >
+                        <input type="text" name="name" value="${requestScope.name}" pattern="[a-zA-Z]{1,25}" >
                     </label> <br>
                     <label>
                         Surname :
-                        <input type="text" name="surname" value="${requestScope.surname}" >
+                        <input type="text" name="surname" value="${requestScope.surname}" pattern="[a-zA-Z]{1,25}">
                     </label> <br>
                     <label>
                         New Password :
-                        <input type="password" name="password" value="${requestScope.password}" >
+                        <input type="password" name="password" value="${requestScope.password}" pattern="[a-zA-Z0-9]{1,20}" >
                     </label> <br>
                     <label>
                         Confirm Password :
-                        <input type="password" name="passwordConfirm" value="${requestScope.password}" >
+                        <input type="password" name="passwordConfirm" value="${requestScope.password}" pattern="[a-zA-Z0-9]{1,25}">
                         <br>
                     </label> <br>
                     <label>
                         Email :
-                        <input type="text" name="email" value="${requestScope.email}" >
+                        <input type="text" name="email" value="${requestScope.email}" pattern="[a-zA-Z]{1,25}" >
                     </label> <br>
                     <label>
                         Tel :
