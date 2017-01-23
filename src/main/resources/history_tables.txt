@@ -1,0 +1,27 @@
+create table HISTORY_FOR_USERS as (select * from USERS);
+alter table HISTORY_FOR_USERS add (time_changing timestamp);
+alter table HISTORY_FOR_USERS add (change_type varchar2(6));
+
+create table HISTORY_FOR_SIMPTOM_LIST as (select * from SIMPTOM_LIST);
+alter table HISTORY_FOR_SIMPTOM_LIST add (time_changing timestamp);
+alter table HISTORY_FOR_SIMPTOM_LIST add (change_type varchar2(6));
+
+create table HISTORY_FOR_RECORDS as (select * from RECORDS);
+alter table HISTORY_FOR_RECORDS add (time_changing timestamp);
+alter table HISTORY_FOR_RECORDS add (change_type varchar2(6));
+
+create table HISTORY_FOR_USER_DISEASES as (select * from DISEASES_HISTORY);
+alter table HISTORY_FOR_USER_DISEASES add (time_changing timestamp);
+alter table HISTORY_FOR_USER_DISEASES add (change_type varchar2(6));
+
+create table HISTORY_FOR_DISEASES as (select * from DISEASES);
+alter table HISTORY_FOR_DISEASES add (time_changing timestamp);
+alter table HISTORY_FOR_DISEASES add (change_type varchar2(6));
+
+create table HISTORY_FOR_DISEASE_LIST as (select * from DISEASE_LIST);
+alter table HISTORY_FOR_DISEASE_LIST add (time_changing timestamp);
+alter table HISTORY_FOR_DISEASE_LIST add (change_type varchar2(6));
+
+create table HISTORY_FOR_COMPLAINTS as (select * from COMPLAINTS);
+alter table HISTORY_FOR_COMPLAINTS add (time_changing timestamp);
+alter table HISTORY_FOR_COMPLAINTS add (change_type varchar2(6));

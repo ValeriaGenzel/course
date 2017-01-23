@@ -1,0 +1,459 @@
+create or replace 
+procedure add_new_disease
+(doctor_login in varchar2, doctor_password in varchar2, 
+d_name in varchar2, s_name in varchar2, d_desc in varchar2, 
+add_status_message out varchar2)
+as
+equal_log_pass integer;
+equal_disease integer;
+equal_dis integer;
+equal_simptom integer;
+
+begin
+set transaction isolation level serializable;
+  select count (*) into equal_log_pass from USERS where u_login = doctor_login and u_password = doctor_password and u_role = 'd';
+  if equal_log_pass > 0 then
+    begin
+      select count (*) into equal_disease from diseases where disease_name = d_name and simptom_name = s_name;
+      if (equal_disease) = 0 then
+        begin
+          select count (*)  into equal_dis from disease_list where disease_name = d_name;
+          if (equal_dis) = 0 then
+            insert into disease_list(disease_name)
+            values (d_name);
+            commit;
+          end if;
+          select count (*) into equal_simptom from simptom_list where simptom_name = s_name;
+          if (equal_simptom) = 0 then
+            insert into simptom_list(simptom_name)
+            values (s_name);
+            commit;
+          end if;
+          insert into diseases(disease_name, simptom_name, disease_description)
+          values(d_name, s_name, d_desc);
+          add_status_message := 'Successful adding';          
+        end;
+      else 
+        add_status_message := 'Disease already added';
+      end if;
+    end;
+  else
+    add_status_message := 'Access denied';
+  end if;
+end;
+/
+
+create or replace 
+procedure Add_new_doctor
+ (main_doc_login in varchar2, main_doc_password in varchar,
+ doctor_login in varchar2, doctor_password in varchar2, 
+ doctor_name in varchar2, doctor_surname in varchar2, 
+ doctor_email in varchar2, doctor_speciality in varchar2, 
+ adding_status_message out varchar2)
+ as
+ equal_log_pass_count integer;
+ main_doctor_count integer;
+  begin
+  set transaction isolation level serializable;
+    select count(*)into main_doctor_count from USERS where u_login = main_doc_login and u_password = main_doc_password and u_role = 'm';
+    if main_doctor_count > 0 then 
+      begin 
+      select count(*)into equal_log_pass_count from USERS where u_login = doctor_login;
+        if equal_log_pass_count = 0 then
+          begin
+            if (doctor_email is not null and doctor_speciality is not null) then
+              begin
+                insert into USERS(u_name, u_surname, u_login, u_password, u_email, u_tel, u_role, doctors_speciality) 
+                values(doctor_name, doctor_surname, doctor_login, doctor_password, doctor_email, NULL, 'd', doctor_speciality );
+                adding_status_message := 'Successful adding';
+                commit;
+              end;
+            else
+              adding_status_message := 'Some input value is NULL';
+            end if;
+          end;
+        else 
+          adding_status_message := 'This doctor is already added';
+        end if;
+      end;
+    else
+      adding_status_message := 'Access denied';
+    end if;
+end Add_new_doctor;
+/
+
+create or replace 
+procedure add_new_record
+ (add_rec_mess out varchar2, doctor_login in varchar2, doctor_password in varchar2,
+ user_login in varchar2, s_name in varchar2, d_name in varchar2, h_begin in date, h_end in date)
+ as
+ record_count integer;
+ diseases_history_count integer;
+ equal_log_pass_count integer;
+ equal_log integer;
+ equal_des integer; 
+ equal_des_list integer;
+ simptom_count integer;
+ d_speciality varchar2(20);
+ begin
+  select max(record_num) into record_count from RECORDS;
+  --select count(diseases_history_num) into diseases_history_count from DISEASES_HISTORY;
+  record_count := record_count + 1;
+  select count(*) into equal_log_pass_count from USERS where users.u_login = doctor_login and users.u_password = doctor_password and users.u_role = 'd';
+  if equal_log_pass_count > 0 then
+    begin
+      select count(*) into equal_log from USERS where USERS.u_login = user_login and users.u_role = 'u';
+      if equal_log > 0 then
+        begin 
+          select diseases_history_num count into diseases_history_count from DISEASES_HISTORY where DISEASES_HISTORY.u_login = user_login;
+          if diseases_history_count > 0 then
+            begin
+              select  count(*) into simptom_count from SIMPTOM_LIST where SIMPTOM_LIST.simptom_name = s_name;
+              if simptom_count > 0 then
+                begin
+                  select count (*) into equal_des from DISEASE_LIST where DISEASE_LIST.disease_name = d_name or d_name is NULL;
+                  if (equal_des) > 0 then
+                    begin
+                      select DISEASES_HISTORY.diseases_history_num into diseases_history_count from DISEASES_HISTORY where DISEASES_HISTORY.u_login = user_login;
+                      select users.doctors_speciality into d_speciality from USERS where Users.u_login = doctor_login;
+                      insert into RECORDS(record_num, diseases_history_num, record_date, disease_name, u_login, doctors_speciality, 
+                      hospital_begin, hospital_end)
+                      values(record_count, diseases_history_count, systimestamp, d_name, doctor_login, d_speciality, h_begin, h_end);
+                      insert into complaints(record_num, simptom_name)
+                      values (record_count, s_name);
+                      add_rec_mess := 'Successful add';
+                      commit;                      
+                    end;
+                  else
+                    add_rec_mess := 'Disease not found';
+                  end if;
+                end;
+              else
+                add_rec_mess := 'Simptom not found';
+              end if;
+            end;
+          else
+            select diseases_history_num count into diseases_history_count from DISEASES_HISTORY;
+            diseases_history_count := diseases_history_count + 1;
+             select count (*) into simptom_count from SIMPTOM_LIST where SIMPTOM_LIST.simptom_name = s_name;
+              if simptom_count > 0 then
+                begin
+                  select count (*) into equal_des from DISEASE_LIST where DISEASE_LIST.disease_name = d_name or d_name is NULL;
+                  if (equal_des) > 0 then
+                    begin
+                      select DISEASES_HISTORY.diseases_history_num into diseases_history_count from DISEASES_HISTORY where DISEASES_HISTORY.u_login = user_login;
+                      select users.doctors_speciality into d_speciality from USERS where Users.u_login = doctor_login;
+                      insert into RECORDS(record_num, diseases_history_num, record_date, disease_name, u_login, doctors_speciality, 
+                      hospital_begin, hospital_end)
+                      values(record_count, diseases_history_count, systimestamp, d_name, doctor_login, d_speciality, h_begin, h_end);
+                      insert into complaints(record_num, simptom_name)
+                      values (record_count, s_name);
+                      add_rec_mess := 'Successful add';
+                      commit;                      
+                    end;
+                  else
+                    add_rec_mess := 'Disease not found';
+                  end if;
+                end;
+              else
+                add_rec_mess := 'Simptom not found';
+              end if;
+            end if;
+        end;
+      else
+         add_rec_mess := 'User not fount';
+      end if;
+    end;
+    else
+      add_rec_mess := 'Access denied';
+  end if;
+end;
+/
+
+create or replace 
+procedure Ban_user
+  (main_doctor_login in varchar2, main_doctor_password in varchar2, 
+  user_login in varchar2, ban_status_message out varchar2)
+as
+  equal_main_doctor integer;
+  equal_user integer;
+  equal_ban integer;
+ begin
+ set transaction isolation level serializable;
+    select count(*) into equal_main_doctor from USERS where u_login = main_doctor_login and u_password = main_doctor_password and u_role = 'm';
+    if equal_main_doctor > 0 then
+      begin
+        select count(*) into equal_user from USERS where u_login = user_login and u_role = 'u';
+        
+        if equal_user > 0 then
+          begin
+            update USERS set
+              u_role = 'b'
+              where u_login = user_login;
+              ban_status_message := 'Successful baned';
+            commit;
+          end;
+        else 
+          ban_status_message := 'User not found';
+        end if;
+        
+        end;
+   else
+     ban_status_message := 'Access denied';
+    end if;
+end	Ban_user;
+/
+
+create or replace 
+procedure Create_new_record
+(doctorLogin in varchar2, doctorPassword in varchar2, userLogin in varchar2,
+diseaseName in varchar2, h_begin in date, h_end in varchar2, add_message out varchar2)
+as
+is_doctor_count integer;
+is_user_count integer;
+dis_hist_count integer;
+dis_count integer;
+rec_num integer;
+d_num integer;
+doctor_spec varchar2(20);
+begin
+set transaction isolation level serializable;
+  select count(*) into is_doctor_count from users where Users.u_login = doctorLogin and u_password =  doctorPassword
+  and u_role = 'd';
+  if is_doctor_count > 0 then 
+    begin
+      select DOCTORS_SPECIALITY into doctor_spec from users where Users.u_login = doctorLogin;
+      select count(*) into is_user_count from users where Users.u_login = userLogin and u_role = 'u';
+      if is_user_count > 0 then
+        begin
+          select count(*) into dis_hist_count from diseases_history where diseases_history.u_login = userLogin;
+          if dis_hist_count > 0 then
+            begin
+              select diseases_history_num into d_num from diseases_history where diseases_history.u_login = userLogin; 
+              select max(record_num+1) into rec_num from records;
+              rec_num := rec_num + 1; 
+              insert into records(RECORD_NUM, DISEASES_HISTORY_NUM, RECORD_DATE, DISEASE_NAME, 
+                                      U_LOGIN, DOCTORS_SPECIALITY, HOSPITAL_BEGIN, HOSPITAL_END)
+              values(rec_num, d_num, systimestamp, diseaseName, userLogin, doctor_spec, h_begin, h_end);
+                add_message := 'Successful added';   
+              commit;
+            end;
+          else
+            
+              add_message := 'Disease history not found';   
+              
+            
+          end if;
+        end;
+        else
+          add_message := 'not found';
+        end if;
+      end;
+    else
+      add_message := 'not found';
+    end if;
+  end;
+/
+
+create or replace 
+procedure Delete_doctor
+ (main_doc_login in varchar2, main_doc_password in varchar2, 
+ doctor_login in varchar2, deleting_status_message out varchar2)
+ as
+ equal_log_pass_count integer;
+ main_doctor_count integer;
+  begin
+  set transaction isolation level serializable;
+    select count(*)into main_doctor_count from USERS where u_login = main_doc_login and u_password  = main_doc_password and u_role = 'm';
+    if main_doctor_count > 0 then 
+      begin 
+      select count(*)into equal_log_pass_count from USERS where u_login = doctor_login;
+        if equal_log_pass_count > 0 then
+          begin
+            delete from USERS where u_login = doctor_login;
+            deleting_status_message := 'Successful deleting';
+            commit;
+          end;
+        else 
+          deleting_status_message := 'This doctor is not found';
+        end if;
+      end;
+    else
+      deleting_status_message := 'Access denied';
+    end if;
+end Delete_doctor;
+/
+
+create or replace 
+procedure disease_update
+(d_login in varchar2, d_password in varchar2, d_name in varchar2, 
+d_desc in varchar2, update_message out varchar2)
+as
+equal_log_pass integer;
+equal_des integer;
+begin
+set transaction isolation level serializable;
+  select count(*) into equal_log_pass from USERS where u_login = d_login and u_password = d_password and u_role = 'd';
+  if (equal_log_pass) > 0 then
+    begin
+      select count (*) into equal_des from DISEASES where disease_name = d_name;
+      if (equal_des) > 0 then
+        begin
+          update DISEASES
+          set disease_description = d_desc
+          where disease_name = d_name;
+          update_message := 'Successful updating';
+          commit;
+        end;
+      else
+        update_message := 'Disease not found';
+      end if;
+    end;
+  else 
+     update_message := 'Access denied';
+  end if;
+end;
+/
+
+create or replace 
+procedure Unban_user
+  (main_doctor_login in varchar2, main_doctor_password in varchar2,
+  user_login in varchar2, ban_status_message out varchar2)
+as
+  equal_main_doctor integer;
+  equal_user_login integer;
+ begin
+ set transaction isolation level serializable;
+    select count(*) into equal_main_doctor from USERS where u_login = main_doctor_login and u_password = main_doctor_password and u_role = 'm';
+    if equal_main_doctor > 0 then
+      begin
+        select count(*) into equal_user_login from USERS where u_login = user_login and u_role = 'b';
+        if equal_user_login > 0 then
+    	  update USERS set
+        u_role = 'u'
+        where u_login = user_login;
+	  ban_status_message := 'Successful unbaned';
+        else
+	  ban_status_message := 'User not found';
+	end if;
+     end;
+   else
+     ban_status_message := 'Access denied';
+    end if;
+end	Unban_user;
+/
+
+create or replace 
+procedure User_authorisation
+  (user_login in varchar2, user_password in varchar2, is_main_doctor out integer, 
+  is_doctor out integer, auth_status_message out varchar2) as
+  equal_log_pass_count integer;
+  main_doctor_count integer;
+  doctor_count integer;
+  isbanned_count integer;
+  begin
+set transaction isolation level read committed;
+    select count(*) into equal_log_pass_count from USERS where u_login = user_login and u_password = user_password;
+    if equal_log_pass_count > 0 then
+      begin
+        select count(*) into isbanned_count from USERS where u_role = 'b';
+        if isbanned_count = 0 then
+          begin
+            select count(*) into main_doctor_count from USERS where u_login = user_login and u_password = user_password and u_role = 'm';
+            if main_doctor_count > 0 then
+              is_main_doctor := 1;
+            else
+              is_main_doctor := 0;
+            end if; 
+            select count(*) into doctor_count from USERS where u_login = user_login and u_password = user_password and u_role = 'd';
+            if doctor_count > 0 then
+              is_doctor := 1;
+            else
+              is_doctor := 0;
+            end if; 
+            auth_status_message := 'Successful authorisation';
+            commit;
+          end;
+        else
+          auth_status_message := 'Baned user';
+        end if;
+      end;
+    else
+      auth_status_message := 'Something wrong with login or password';
+    end if;
+end User_authorisation;
+/
+
+create or replace 
+procedure User_editing_profile
+(user_login in varchar2, user_password_old in varchar2, user_name in varchar2, 
+user_surname in varchar2, user_password in varchar2, 
+user_password_confirm in varchar2, user_email in varchar2, user_tel in integer, edit_status_message out varchar2) as
+equal_log_pass_count integer;
+role_count integer;
+
+  begin
+  set transaction isolation level serializable;
+    select count(*) into equal_log_pass_count from USERS where u_login = user_login and u_password = user_password_old;
+    select count(*) into role_count from USERS where u_login = user_login and u_password = user_password_old and (u_role = 'd' or u_role = 'm');
+    if equal_log_pass_count > 0 then 
+    begin
+        if(role_count = 0) or (role_count > 0 and user_email is not null) then 
+          begin
+            if user_password = user_password_confirm then
+              begin
+                update USERS set
+                  u_name = user_name,
+                  u_surname = user_surname,
+                  u_password = user_password,
+                  u_email = user_email,
+                  u_tel = user_tel
+                where u_login = user_login;
+                edit_status_message := 'Successful editing';
+                commit;
+              end;
+            else
+              edit_status_message := 'Confirm your password';
+            end if;
+          end;
+          else
+            edit_status_message := 'Some value is NULL';
+        end if;
+      end;
+      else
+        edit_status_message := 'Access denied';
+    end if;
+end User_editing_profile;
+/
+
+create or replace 
+procedure User_registration
+  (user_name in varchar2, user_surname in varchar2, user_login in varchar2, 
+  user_password in varchar2, user_password_confirm in varchar2, reg_status_message out varchar2) as
+  equal_login_count integer;
+  dis_count integer;
+  Begin
+  set transaction isolation level serializable;
+    --set transaction isolation level serializable;
+    select count(*) into equal_login_count from USERS where u_login = user_login;
+      if equal_login_count = 0 then
+        if (user_password = user_password_confirm) then
+          begin
+            insert into USERS(u_name, u_surname, u_login, u_password, u_email, u_tel, u_role, doctors_speciality) 
+            values(user_name, user_surname, user_login, user_password, NULL, NULL, 'u', NULL );
+            SELECT max(diseases_history_num) into dis_count FROM diseases_history;
+            insert into diseases_history(diseases_history_num, u_login)
+            values(dis_count + 1, user_login);
+        
+            commit;
+            reg_status_message:='Successful registration';
+          end;
+          else 
+            reg_status_message := 'Confirm your password';
+          end if;
+      else
+      reg_status_message:='This login is already in use';
+    end if;
+end User_registration;
+/
+

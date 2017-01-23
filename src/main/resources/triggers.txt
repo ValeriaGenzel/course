@@ -1,0 +1,123 @@
+create or replace trigger Simptom_list_trigger
+before insert or update on SIMPTOM_LIST
+for each row
+begin
+  if inserting then
+    insert into HISTORY_FOR_SIMPTOM_LIST(simptom_name, time_changing, change_type)
+    values (:new.simptom_name, systimestamp, 'insert' );
+  end if;
+  if updating then
+    insert into HISTORY_FOR_SIMPTOM_LIST(simptom_name, time_changing, change_type)
+    values (:old.simptom_name, systimestamp, 'update' );
+  end if;
+end Simptom_list_trigger;
+/
+
+create or replace trigger Users_trigger
+before insert or update or delete on USERS
+for each row
+begin
+  if inserting then
+    insert into HISTORY_FOR_USERS(u_name, u_surname, u_login, u_password, u_email,
+                                  u_tel, u_role, doctors_speciality, time_changing, change_type)
+    values (:new.u_name, :new.u_surname, :new.u_login, :new.u_password, :new.u_email,
+            :new.u_tel, :new.u_role, :new.doctors_speciality, SYSTIMESTAMP, 'insert');
+  end if;
+  if updating then
+    insert into HISTORY_FOR_USERS(u_name, u_surname, u_login, u_password, u_email,
+                                  u_tel, u_role, doctors_speciality, time_changing, change_type)
+    values (:old.u_name, :old.u_surname, :old.u_login, :old.u_password, :old.u_email,
+            :old.u_tel, :old.u_role, :old.doctors_speciality, SYSTIMESTAMP, 'update');
+  end if;
+  if deleting then
+    insert into HISTORY_FOR_USERS(u_name, u_surname, u_login, u_password, u_email,
+                                  u_tel, u_role, doctors_speciality, time_changing, change_type)
+    values (:old.u_name, :old.u_surname, :old.u_login, :old.u_password, :old.u_email,
+            :old.u_tel, :old.u_role, :old.doctors_speciality, SYSTIMESTAMP, 'delete');
+  end if;
+end Users_trigger;
+/
+
+create or replace trigger Disease_list_trigger
+before insert or update on DISEASE_LIST
+for each row
+begin
+  if inserting then
+    insert into HISTORY_FOR_DISEASE_LIST(disease_name, time_changing, change_type)
+    values (:new.disease_name, systimestamp, 'insert' );
+  end if;
+  if updating then
+    insert into HISTORY_FOR_DISEASE_LIST(disease_name, time_changing, change_type)
+    values (:old.disease_name, systimestamp, 'update' );
+  end if;
+end;
+/
+
+create or replace trigger Diseases_trigger
+before insert or update on DISEASES
+for each row
+begin
+  if inserting then
+    insert into HISTORY_FOR_DISEASES(disease_name, simptom_name, disease_description, time_changing, change_type)
+    values (:new.disease_name, :new.simptom_name, :new.disease_description, systimestamp, 'insert' );
+  end if;
+  if updating then
+    insert into HISTORY_FOR_DISEASES(disease_name, simptom_name, disease_description, time_changing, change_type)
+    values (:old.disease_name, :old.simptom_name, :old.disease_description, systimestamp, 'update' );
+  end if;
+end;
+/
+
+create or replace trigger Diseases_history_trigger
+before insert or update on DISEASES_HISTORY
+for each row
+begin
+  if inserting then
+    insert into HISTORY_FOR_USER_DISEASES(diseases_history_num, u_login, time_changing, change_type)
+    values (:new.diseases_history_num, :new.u_login, systimestamp, 'insert' );
+  end if;
+  if updating then
+    insert into HISTORY_FOR_USER_DISEASES(diseases_history_num, u_login, time_changing, change_type)
+    values (:old.diseases_history_num, :old.u_login, systimestamp, 'update' );
+  end if;
+end;
+/
+
+create or replace trigger Records_trigger
+before insert or update on RECORDS
+for each row
+begin
+  if inserting then
+    insert into HISTORY_FOR_RECORDS(record_num, diseases_history_num, record_date, disease_name, u_login, doctors_speciality,
+                                    hospital_begin, hospital_end, time_changing, change_type)
+    values (:new.record_num, :new.diseases_history_num, :new.record_date, :new.disease_name, :new.u_login, :new.doctors_speciality,
+                                    :new.hospital_begin, :new.hospital_end, systimestamp, 'insert' );
+  end if;
+  if updating then
+    insert into HISTORY_FOR_RECORDS(record_num, diseases_history_num, record_date, disease_name, u_login, doctors_speciality,
+                                    hospital_begin, hospital_end, time_changing, change_type)
+    values (:old.record_num, :old.diseases_history_num, :old.record_date, :old.disease_name, :old.u_login, :old.doctors_speciality,
+                                    :old.hospital_begin, :old.hospital_end, systimestamp, 'update' );
+  end if;
+end;
+/
+
+create or replace trigger Complaints_trigger
+before insert or update on COMPLAINTS
+for each row
+begin
+  if inserting then
+    insert into HISTORY_FOR_COMPLAINTS(record_num, simptom_name, time_changing, change_type)
+    values (:new.record_num, :new.simptom_name, systimestamp, 'insert' );
+  end if;
+  if updating then
+    insert into HISTORY_FOR_COMPLAINTS(record_num, simptom_name, time_changing, change_type)
+    values (:old.record_num, :old.simptom_name, systimestamp, 'update' );
+  end if;
+end;
+
+    
+
+
+
+  

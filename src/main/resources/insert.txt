@@ -1,0 +1,76 @@
+insert into Users(u_name, u_surname, 
+                  u_login,u_password, u_email,
+                  u_role, doctors_speciality)
+values('Gregory', 'House','GHouse', 'GHouse',
+       'gregory_housr@gmail.com','d','Infectious');
+       
+insert into Users(u_name, u_surname, 
+                  u_login,u_password, u_email,
+                  u_role, doctors_speciality)
+values('Lisa', 'Cuddy','LCuddy', 'LCuddy',
+       'lisa_cuddy@gmail.com','m','Endocrinologis');       
+
+insert into Users(u_name, u_surname, 
+                  u_login,u_password, u_email,
+                  u_role, doctors_speciality)
+values('Allison', 'Cameron','ACameron', 'ACameron',
+       'allison_cameron@gmail.com','d','Immunologist');   
+insert into Users(u_name, u_surname, 
+                  u_login,u_password, u_email,
+                  u_role, doctors_speciality)
+values('Name', 'Surname','NSurname', 'NSurname',
+       NULL,'u',Null);       
+--select * from users;
+
+insert into Simptom_list(simptom_name)
+values('Hyperglycemia');
+
+insert into Simptom_list(simptom_name)
+values('Fever');
+
+insert into Simptom_list(simptom_name)
+values('Sore throat'); --במכü ג דמנכו
+
+--select * from simptom_list;
+
+insert into disease_list(disease_name)
+values ('Tonsillitis');
+
+insert into disease_list(disease_name)
+values ('SLE');
+
+insert into disease_list(disease_name)
+values ('Diabetes');
+
+insert into Diseases(disease_name, simptom_name, disease_description)
+values('Tonsillitis','Sore throat','https://en.wikipedia.org/wiki/Tonsillitis');
+
+insert into Diseases(disease_name, simptom_name, disease_description)
+values('Diabetes','Hyperglycemia','https://en.wikipedia.org/wiki/Diabetes_mellitus');
+
+insert into Diseases(disease_name, simptom_name, disease_description)
+values('SLE','Fever','https://en.wikipedia.org/wiki/Systemic_lupus_erythematosus');
+
+insert into Diseases(disease_name, simptom_name, disease_description)
+values('Tonsillitis','Fever','https://en.wikipedia.org/wiki/Tonsillitis');
+
+--select * from diseases;
+insert into diseases_history(diseases_history_num, u_login)
+values(1, 'NSurname');
+
+
+insert into records(RECORD_NUM, DISEASES_HISTORY_NUM,RECORD_DATE,DISEASE_NAME,U_LOGIN,DOCTORS_SPECIALITY, HOSPITAL_BEGIN,HOSPITAL_END)
+values('1', '1', systimestamp,Null,'ACameron','Immunologist',null,null);
+
+
+
+
+
+drop table disease_list;
+drop table simptom_list;
+drop table diseases;
+drop table diseases_history;
+--drop table complaints;
+drop table records;
+drop table users;*/
+  

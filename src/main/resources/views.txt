@@ -1,0 +1,46 @@
+create view Patient_viewing as(
+  select u_name, u_surname, u_email,  u_login, u_role
+  from USERS
+  where u_role = 'u' or u_role = 'b' 
+);
+--select * from doctors_viewing;
+//
+create view Doctors_viewing as(
+  select u_name, u_surname, doctors_speciality, u_email, u_login
+  from USERS
+  where u_role = 'd'
+);
+//
+create view Diseases_viewing as (
+  select *
+  from DISEASES
+	group by disease_name
+);
+//
+
+
+create view Ban_user_viewing as(
+  select u_name, u_surname, u_login
+  from USERS
+  where u_role = 'b' 
+);
+//
+
+Create or replace view disease_history_viewing as(
+  select RECORD_DATE,DISEASE_NAME, DOCTORS_SPECIALITY, HOSPITAL_BEGIN,HOSPITAL_END, diseases_history.u_login u_login 
+  from records join diseases_history on records.diseases_history_num = diseases_history.diseases_history_num
+  
+);
+
+ create view main_doctor_view as(
+  select u_name, u_surname, doctors_speciality, u_email, u_tel
+  from users
+  where u_role = 'm'
+
+);
+
+create view personal_page_view as(
+  select u_login, u_name, u_surname, u_password, u_email, u_tel, doctors_speciality
+  from users
+);
+

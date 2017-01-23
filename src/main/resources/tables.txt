@@ -1,0 +1,67 @@
+create table USERS 
+(
+  u_name          varchar2(25) not null,
+  u_surname       varchar2(25) not null,
+  u_login         varchar2(25) not null	primary key,
+  u_password      varchar2(20) not null,
+  u_email         varchar2(25) null,
+  u_tel           int      null,
+  u_role          varchar2(1)  not null,
+  doctors_speciality    varchar2(20) null
+);
+ 
+ 
+create table SIMPTOM_LIST
+(
+  simptom_name  varchar2(30) not null primary key
+);
+  
+
+create table DISEASE_LIST
+(
+  disease_name   varchar2(30) not null primary key
+);
+
+
+create table DISEASES (
+  disease_name   varchar2(30) not null,
+  simptom_name   varchar2(30) not null, 
+  disease_description   varchar2(80) null,
+  FOREIGN KEY (simptom_name) REFERENCES SIMPTOM_LIST,
+  FOREIGN KEY (disease_name) REFERENCES DISEASE_LIST
+);
+
+alter table DISEASES add constraint diseases_pk primary key(disease_name, simptom_name);
+--alter table DISEASES add constraint simptom_unique unique(simptom_name);
+create table Diseases_history
+(
+  diseases_history_num   int       not null primary key,
+  u_login                varchar2(25)   not null, --from users
+  FOREIGN KEY (u_login) REFERENCES Users 
+);
+
+create table RECORDS
+(
+  record_num                int       not null primary key,
+  diseases_history_num      int       not null, -- from diseases history
+  record_date               date      not null,
+  disease_name              varchar2(30)  null, -- from diseases
+  u_login                   varchar2(25)  not null, -- from users
+  doctors_speciality        varchar2(30)  not null,
+  hospital_begin            date      null,
+  hospital_end              date      null,
+  
+  FOREIGN KEY (diseases_history_num) REFERENCES DISEASES_HISTORY,
+  FOREIGN KEY (disease_name) REFERENCES DISEASE_LIST,
+  FOREIGN KEY (u_login) REFERENCES USERS 
+  --FOREIGN KEY (doctors_speciality) REFERENCES USERS
+);
+
+create table COMPLAINTS(
+  record_num  int       not null,
+  simptom_name varchar2(30) not null,
+  FOREIGN KEY (simptom_name) REFERENCES SIMPTOM_LIST,
+  FOREIGN KEY (record_num) REFERENCES RECORDS
+);  
+
+alter table COMPLAINTS add constraint complaints_pk primary key (record_num, simptom_name);
