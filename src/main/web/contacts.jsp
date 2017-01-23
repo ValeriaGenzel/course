@@ -2,7 +2,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Home</title>
+    <title>Contacts</title>
+    <link href="css.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 
@@ -14,7 +15,9 @@
                     Hello, ${sessionScope.login}!
                     <input type="hidden" name="action" value="out">
                     <input type="submit" value="Logout"/>
-                    <a href="<c:url value="/editProfile.jsp"/>">Personal page</a>
+                    <form method="post" action="personal_page">
+                        <input type="submit" value="Personal page">
+                    </form>
                     <a href="<c:url value="/diseaseHistory.jsp"/>">Disease history</a>
                 </form>
             </c:if>
@@ -60,7 +63,7 @@
         </td>
     </tr>
     <br>
-    <tr>
+
     <tr align="centre">
         <td>
             <c:forEach items="${requestScope.mainDoctorList}" var="item">
@@ -76,7 +79,9 @@
             </c:forEach>
         </td>
     </tr>
-    </tr>
+   <br>
+    <br>
+    <br>
     <hr>
     <tr>
         <td>
@@ -85,6 +90,7 @@
             </footer>
         </td>
     </tr>
+
 </table>
 </body>
 </html>

@@ -5,6 +5,7 @@
 <html>
     <head>
         <title>Doctors</title>
+        <link href="css.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
     <br>
@@ -19,7 +20,9 @@
                         Hello, ${sessionScope.login}!
                         <input type="hidden" name="action" value="out">
                         <input type="submit" value="Logout"/>
-                        <a href="<c:url value="/editProfile.jsp"/>">Personal page</a>
+                        <form method="post" action="personal_page">
+                            <input type="submit" value="Personal page">
+                        </form>
                         <a href="<c:url value="/diseaseHistory.jsp"/>">Disease history</a>
                     </form>
                 </c:if>
@@ -70,14 +73,11 @@
                 <table align="centre">
                     <tr>
                         <input type = "text" value="${item[0]}" align="centre" readonly>
-                    </tr>
-                     <tr>
+
                          <input type = "text" value="${item[1]}" align="centre" readonly>
-                     </tr>
-                    <tr>
+
                         <input type = "text" value="${item[2]}" align="centre" readonly>
-                    </tr>
-                    <tr>
+
                         <input type = "text" value="${item[3]}" align="centre" readonly>
                     </tr>
                     <tr>

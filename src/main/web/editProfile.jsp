@@ -3,6 +3,7 @@
 <html>
     <head>
         <title>Personal Page</title>
+        <link href="css.css" rel="stylesheet" type="text/css" />
     </head>
     <body>
     <br>
@@ -17,7 +18,9 @@
                         Hello, ${sessionScope.login}!
                         <input type="hidden" name="action" value="out">
                         <input type="submit" value="Logout"/>
-                        <a href="<c:url value="/editProfile.jsp"/>">Personal page</a>
+                        <form method="post" action="personal_page">
+                            <input type="submit" value="Personal page">
+                        </form>
                         <a href="<c:url value="/diseaseHistory.jsp"/>">Disease history</a>
                     </form>
                 </c:if>
@@ -66,6 +69,7 @@
             </td>
         </tr>
         <br>
+        <tr><h2>Personal page</h2></tr>
         <tr>
             <c:if test="${!empty sessionScope.login}">
 

@@ -3,6 +3,8 @@
 <html>
 <head>
     <title>Home</title>
+    <link href="css.css" rel="stylesheet" type="text/css" />
+
 </head>
 <body>
 
@@ -23,7 +25,7 @@
 
             </c:if>
             <c:if test="${empty sessionScope.login}">
-                <a href="<c:url value="/login.jsp"/>">Login</a>
+                <a href="<c:url value="/login.jsp"/>">Login</a><br>
                 <a href="<c:url value="/registration.jsp"/>">Registration</a>
             </c:if>
         </td>
